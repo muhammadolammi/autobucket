@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "809182906117",
+    "project_id": "autobucket-dafdd",
+    "storage_bucket": "autobucket-dafdd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809182906117:android:9f01e0eda5ceb36360196c",
+        "android_client_info": {
+          "package_name": "com.example.autobucket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcyMaeD9kbmvNWFzVstuVtD1Ij5OHi_Pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
