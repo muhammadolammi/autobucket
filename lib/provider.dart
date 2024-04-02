@@ -8,3 +8,11 @@ final authProvider = Provider((ref) {
   final auth = FirebaseAuth.instance;
   return AuthRepository(firestore: firestore, auth: auth);
 });
+
+final authProvider = Provider((ref) {
+  return FirebaseAuth.instance;
+});
+
+final firestore = Provider((ref) {
+  return FirebaseFirestore.instance;
+});
