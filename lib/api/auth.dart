@@ -30,4 +30,12 @@ class AuthRepository {
       print("Sign up failed: $e");
     }
   }
+
+  void signIn(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      print("Sign ins failed: $e");
+    }
+  }
 }
