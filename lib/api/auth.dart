@@ -1,43 +1,44 @@
 import 'package:autobucket/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:autobucket/core/core.dart';
 
 class AuthApi {
-  final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  AuthApi({required FirebaseFirestore firestore, required FirebaseAuth auth})
-      : _firestore = firestore,
-        _auth = auth;
+  AuthApi({required FirebaseAuth auth}) : _auth = auth;
 
-  FutureEither<UserModel> signUp(UserModel user) async {
+  FutureEither<UserCredential?> signUp(UserModel user) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      final res = await _auth.createUserWithEmailAndPassword(
           email: user.email, password: user.password);
       // save user details to firestore
-      _firestore.collection("users").add({
-        "name": user.name,
-        "email": user.email,
-        "gender": user.gender,
-        "isAdmin": user.isAdmin,
-        "isWorker": user.isWorker,
-        "profilePic": user.profilePic
-      });
+
       print("Sign up successful");
 
-      return user;
-    } catch (e) {
-      //TODO implement catching error
+      return Either.right(res);
+    } on FirebaseAuthException catch (e, stackTrace) {
       print("Sign up failed: $e");
+      return Either.left(
+          Failure(e.message ?? 'an unknown error occured', stackTrace));
+    } catch (e, stackTrace) {
+      print("Sign up failed: $e");
+      return Either.left(Failure(e.toString(), stackTrace));
     }
   }
 
-  void signIn(String email, String password) async {
+  FutureEither<UserCredential> signIn(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } catch (e) {
-      print("Sign ins failed: $e");
+      final res = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return Either.right(res);
+    } on FirebaseAuthException catch (e, stackTrace) {
+      print("Sign in failed: $e");
+      return Either.left(
+          Failure(e.message ?? 'an unkown error occured', stackTrace));
+    } catch (e, stackTrace) {
+      print("Sign in failed: $e");
+      return Either.left(Failure(e.toString(), stackTrace));
     }
   }
 }
