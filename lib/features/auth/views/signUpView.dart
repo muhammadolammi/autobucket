@@ -1,5 +1,6 @@
 import 'package:autobucket/common/common.dart';
 import 'package:autobucket/components/appbar.dart';
+import 'package:autobucket/components/auth.dart';
 import 'package:autobucket/components/customfield.dart';
 import 'package:autobucket/features/auth/controller.dart';
 import 'package:autobucket/features/auth/views/signInView.dart';
@@ -28,6 +29,18 @@ class _SignUpState extends ConsumerState<SignUpView> {
     final passwordContoller = TextEditingController();
     final auth = ref.watch(authNotifierProvider.notifier);
     final isloading = ref.watch(authNotifierProvider);
+    void signUpUser() {
+      auth.signUp(
+          user: UserModel(
+              name: nameContoller.text,
+              email: emailContoller.text,
+              password: passwordContoller.text,
+              isWorker: false,
+              isAdmin: false,
+              profilePic: "",
+              gender: genderContoller.text),
+          context: context);
+    }
 
     return Scaffold(
       appBar: myAppBar,
@@ -38,42 +51,58 @@ class _SignUpState extends ConsumerState<SignUpView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(
+                    width: 338,
+                    height: 150,
+                    margin: EdgeInsets.symmetric(
+                      vertical: 24,
+                      horizontal: 14,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 24,
+                      horizontal: 14,
+                    ),
+                    child: Text(
+                      "Hey there, Welcome OnBoard",
+                      style: TextStyle(
+                        color: Color(0xff161718),
+                        fontFamily: "roboto",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 36,
+                      ),
+                    ),
+                  ),
                   CustomFormField(
                       labelText: "email", controller: emailContoller),
                   CustomFormField(
                       labelText: "password", controller: passwordContoller),
-                  CustomFormField(labelText: "name", controller: nameContoller),
-                  CustomFormField(
-                      labelText: "gender", controller: genderContoller),
+                  //TODO Determine How to get Name and Gender
+                  // CustomFormField(labelText: "name", controller: nameContoller),
+                  // CustomFormField(
+                  //     labelText: "gender", controller: genderContoller),
+                  AuthButton(labelText: "Sign Up", func: signUpUser),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            auth.signUp(
-                                user: UserModel(
-                                    name: nameContoller.text,
-                                    email: emailContoller.text,
-                                    password: passwordContoller.text,
-                                    isWorker: false,
-                                    isAdmin: false,
-                                    profilePic: "",
-                                    gender: genderContoller.text),
-                                context: context);
-                          },
-                          child: Text("sign up")),
                       RichText(
                           text: TextSpan(
                               text: "Already have an account?",
                               style: const TextStyle(
                                 fontSize: 16,
-                                color: Colors.black,
+                                color: Color(
+                                  0xff161718,
+                                ),
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'roboto',
                               ),
                               children: [
                             TextSpan(
                               text: ' Sign In',
                               style: const TextStyle(
-                                color: Colors.blue,
+                                color: Color(0xff297DFD),
                                 fontSize: 16,
+                                fontFamily: 'roboto',
+                                fontWeight: FontWeight.w400,
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
@@ -84,7 +113,7 @@ class _SignUpState extends ConsumerState<SignUpView> {
                             ),
                           ])),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
